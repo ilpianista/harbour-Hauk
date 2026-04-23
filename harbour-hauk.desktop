@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Application
+X-Nemo-Application-Type=silica-qt5
+Categories=Utility;
+Icon=harbour-hauk
+Exec=harbour-hauk
+Name=Hauk
+Comment=Hauk client
+
+[X-Sailjail]
+Permissions=Internet;Secrets;Location
+OrganizationName=dev.scarpino
+ApplicationName=harbour-hauk
