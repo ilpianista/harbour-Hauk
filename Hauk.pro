@@ -34,4 +34,4 @@ CONFIG += sailfishapp_i18n
 PKGCONFIG += sailfishsecrets
 
 TRANSLATIONS += \
-    translations/harbour-sailhn-it.ts \
+    translations/harbour-hauk-it.ts \

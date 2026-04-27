@@ -20,7 +20,7 @@ Page {
                 text: qsTr("Share link")
                 enabled: client.shareLink != ""
                 onClicked: {
-                    share.trigger()
+                    share.trigger();
                 }
             }
         }
@@ -89,14 +89,13 @@ Page {
             Button {
                 x: Theme.horizontalPageMargin
                 width: parent.width - 2 * Theme.horizontalPageMargin
-                text: client.tracking ? qsTr("Stop sharing") : qsTr(
-                                            "Start sharing")
+                text: client.tracking ? qsTr("Stop sharing") : qsTr("Start sharing")
                 enabled: !client.tracking || client.sessionId.length > 0
                 onClicked: {
                     if (client.tracking) {
-                        client.stopTracking()
+                        client.stopTracking();
                     } else {
-                        client.startTracking()
+                        client.startTracking();
                     }
                 }
             }
@@ -110,17 +109,17 @@ Page {
                 currentIndex: {
                     switch (client.duration) {
                     case 1800:
-                        return 0
+                        return 0;
                     case 3600:
-                        return 1
+                        return 1;
                     case 7200:
-                        return 2
+                        return 2;
                     case 14400:
-                        return 3
+                        return 3;
                     case 43200:
-                        return 4
+                        return 4;
                     default:
-                        return 1
+                        return 1;
                     }
                 }
                 menu: ContextMenu {
@@ -156,17 +155,17 @@ Page {
                 currentIndex: {
                     switch (client.interval) {
                     case 10:
-                        return 0
+                        return 0;
                     case 30:
-                        return 1
+                        return 1;
                     case 60:
-                        return 2
+                        return 2;
                     case 120:
-                        return 3
+                        return 3;
                     case 300:
-                        return 4
+                        return 4;
                     default:
-                        return 1
+                        return 1;
                     }
                 }
                 menu: ContextMenu {
@@ -197,9 +196,7 @@ Page {
             Label {
                 x: Theme.horizontalPageMargin
                 width: parent.width - 2 * Theme.horizontalPageMargin
-                text: qsTr(
-                          "Server:") + " " + (client.serverUrl ? client.serverUrl : qsTr(
-                                                                     "Not configured"))
+                text: qsTr("Server:") + " " + (client.serverUrl ? client.serverUrl : qsTr("Not configured"))
                 color: Theme.secondaryColor
                 font.pixelSize: Theme.fontSizeSmall
                 horizontalAlignment: Text.AlignHCenter
@@ -231,29 +228,31 @@ Page {
 
         title: qsTr("Share link")
         mimeType: "text/x-url"
-        resources: [{
+        resources: [
+            {
                 "type": "text/x-url",
                 "linkTitle": "Hauk",
                 "status": client.shareLink
-            }]
+            }
+        ]
     }
 
     function formatTime(seconds) {
         if (seconds <= 0)
-            return ""
-        var hours = Math.floor(seconds / 3600)
-        var mins = Math.floor((seconds % 3600) / 60)
-        var secs = seconds % 60
+            return "";
+        var hours = Math.floor(seconds / 3600);
+        var mins = Math.floor((seconds % 3600) / 60);
+        var secs = seconds % 60;
         if (hours > 0) {
-            return hours + ":" + (mins < 10 ? "0" : "") + mins + ":" + (secs < 10 ? "0" : "") + secs
+            return hours + ":" + (mins < 10 ? "0" : "") + mins + ":" + (secs < 10 ? "0" : "") + secs;
         }
-        return mins + ":" + (secs < 10 ? "0" : "") + secs
+        return mins + ":" + (secs < 10 ? "0" : "") + secs;
     }
 
     Connections {
         target: client
         onError: {
-            errorMsg.text = errorMsg
+            errorMsg.text = errorMsg;
         }
     }
 }

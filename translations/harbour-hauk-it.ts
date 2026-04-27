@@ -136,11 +136,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/SettingsPage.qml" line="27"/>
-        <source>https://your-server.com/hauk</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../qml/pages/SettingsPage.qml" line="29"/>
         <source>Server URL</source>
         <translation type="unfinished"></translation>

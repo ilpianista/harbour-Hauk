@@ -24,7 +24,7 @@ Page {
             TextField {
                 id: serverUrlField
                 width: parent.width
-                placeholderText: qsTr("https://your-server.com/hauk")
+                placeholderText: "https://your-server.com/hauk"
                 text: client.serverUrl
                 label: qsTr("Server URL")
                 inputMethodHints: Qt.ImhUrlCharactersOnly
