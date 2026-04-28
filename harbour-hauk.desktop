@@ -7,6 +7,9 @@ Exec=harbour-hauk
 Name=Hauk
 Comment=Hauk client
 
+[X-HarbourBackup]
+BackupPathList=.config/dev.scarpino/harbour-hauk/
+
 [X-Sailjail]
 Permissions=Internet;Secrets;Location
 OrganizationName=dev.scarpino
