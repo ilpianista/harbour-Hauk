@@ -33,7 +33,7 @@
     </message>
     <message>
         <location filename="../qml/pages/MainPage.qml" line="20"/>
-        <location filename="../qml/pages/MainPage.qml" line="232"/>
+        <location filename="../qml/pages/MainPage.qml" line="229"/>
         <source>Share link</source>
         <translation>Del lenke</translation>
     </message>
@@ -53,72 +53,72 @@
         <translation>Start deling</translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="108"/>
+        <location filename="../qml/pages/MainPage.qml" line="107"/>
         <source>Duration</source>
         <translation>Varighet</translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="128"/>
+        <location filename="../qml/pages/MainPage.qml" line="127"/>
         <source>30 minutes</source>
         <translation>30 minutter</translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="132"/>
+        <location filename="../qml/pages/MainPage.qml" line="131"/>
         <source>1 hour</source>
         <translation>1 time</translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="136"/>
+        <location filename="../qml/pages/MainPage.qml" line="135"/>
         <source>2 hours</source>
         <translation>2 timer</translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="140"/>
+        <location filename="../qml/pages/MainPage.qml" line="139"/>
         <source>4 hours</source>
         <translation>4 timer</translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="144"/>
+        <location filename="../qml/pages/MainPage.qml" line="143"/>
         <source>12 hours</source>
         <translation>12 timer</translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="154"/>
+        <location filename="../qml/pages/MainPage.qml" line="153"/>
         <source>Update interval</source>
         <translation>Oppdateringsfrekvens</translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="174"/>
+        <location filename="../qml/pages/MainPage.qml" line="173"/>
         <source>10 seconds</source>
         <translation>10 sekunder</translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="178"/>
+        <location filename="../qml/pages/MainPage.qml" line="177"/>
         <source>30 seconds</source>
         <translation>30 sekunder</translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="182"/>
+        <location filename="../qml/pages/MainPage.qml" line="181"/>
         <source>1 minute</source>
         <translation>1 minutt</translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="186"/>
+        <location filename="../qml/pages/MainPage.qml" line="185"/>
         <source>2 minutes</source>
         <translation>2 minutter</translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="190"/>
+        <location filename="../qml/pages/MainPage.qml" line="189"/>
         <source>5 minutes</source>
         <translation>5 minutter</translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="200"/>
+        <location filename="../qml/pages/MainPage.qml" line="199"/>
         <source>Server:</source>
         <translation>Server:</translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="201"/>
+        <location filename="../qml/pages/MainPage.qml" line="199"/>
         <source>Not configured</source>
         <translation>Ikke konfigurert</translation>
     </message>
@@ -134,11 +134,6 @@
         <location filename="../qml/pages/SettingsPage.qml" line="21"/>
         <source>Server</source>
         <translation>Server</translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/SettingsPage.qml" line="27"/>
-        <source>https://your-server.com/hauk</source>
-        <translation>https://din-server.com/hauk</translation>
     </message>
     <message>
         <location filename="../qml/pages/SettingsPage.qml" line="29"/>

@@ -174,27 +174,27 @@
     <message>
         <location filename="../qml/pages/SettingsPage.qml" line="82"/>
         <source>30 minutes</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">30 minuti</translation>
     </message>
     <message>
         <location filename="../qml/pages/SettingsPage.qml" line="86"/>
         <source>1 hour</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">1 ora</translation>
     </message>
     <message>
         <location filename="../qml/pages/SettingsPage.qml" line="90"/>
         <source>2 hours</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">2 ore</translation>
     </message>
     <message>
         <location filename="../qml/pages/SettingsPage.qml" line="94"/>
         <source>4 hours</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">3 ore</translation>
     </message>
     <message>
         <location filename="../qml/pages/SettingsPage.qml" line="98"/>
         <source>12 hours</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">12 ore</translation>
     </message>
     <message>
         <location filename="../qml/pages/SettingsPage.qml" line="106"/>
@@ -204,27 +204,27 @@
     <message>
         <location filename="../qml/pages/SettingsPage.qml" line="125"/>
         <source>10 seconds</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">10 secondi</translation>
     </message>
     <message>
         <location filename="../qml/pages/SettingsPage.qml" line="129"/>
         <source>30 seconds</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">30 secondi</translation>
     </message>
     <message>
         <location filename="../qml/pages/SettingsPage.qml" line="133"/>
         <source>1 minute</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">1 minuto</translation>
     </message>
     <message>
         <location filename="../qml/pages/SettingsPage.qml" line="137"/>
         <source>2 minutes</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">2 minuti</translation>
     </message>
     <message>
         <location filename="../qml/pages/SettingsPage.qml" line="141"/>
         <source>5 minutes</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">5 minuti</translation>
     </message>
 </context>
 </TS>
