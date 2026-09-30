@@ -1,2 +1,6 @@
+* Wed Sep 30 2026 Andrea Scarpino <andrea@scarpino.dev> 0.0.2-1
+- Add 24 hours to duration.
+- Fix double cipher dialog on startup.
+
 * Mon Apr 27 2026 Andrea Scarpino <andrea@scarpino.dev> 0.0.1-1
 - First release
