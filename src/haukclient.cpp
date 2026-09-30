@@ -37,8 +37,11 @@ HaukClient::HaukClient(QObject *parent)
     m_duration = m_settings->value("duration", 3600).toInt();
     m_interval = m_settings->value("interval", 30).toInt();
 
+    connect(m_secureStorage, &SecureStorage::initialized, this, [this]() {
+        m_password = m_secureStorage->loadPassword();
+        emit passwordChanged();
+    });
     m_secureStorage->initialize();
-    m_password = m_secureStorage->loadPassword();
 
     m_positionSource = QGeoPositionInfoSource::createDefaultSource(this);
 
