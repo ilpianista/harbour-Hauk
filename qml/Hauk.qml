@@ -6,13 +6,7 @@ import "pages"
 ApplicationWindow {
     id: app
 
-    property HaukClient client: HaukClient {
-        Component.onCompleted: {
-            if (typeof secureStorage !== 'undefined') {
-                client.setSecureStorage(secureStorage);
-            }
-        }
-    }
+    property HaukClient client: HaukClient {}
 
     initialPage: Component {
         MainPage {}
