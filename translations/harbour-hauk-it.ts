@@ -33,7 +33,7 @@
     </message>
     <message>
         <location filename="../qml/pages/MainPage.qml" line="20"/>
-        <location filename="../qml/pages/MainPage.qml" line="229"/>
+        <location filename="../qml/pages/MainPage.qml" line="235"/>
         <source>Share link</source>
         <translation>Condividi link</translation>
     </message>
@@ -58,67 +58,72 @@
         <translation>Durata</translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="127"/>
+        <location filename="../qml/pages/MainPage.qml" line="129"/>
         <source>30 minutes</source>
         <translation>30 minuti</translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="131"/>
+        <location filename="../qml/pages/MainPage.qml" line="133"/>
         <source>1 hour</source>
         <translation>1 ora</translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="135"/>
+        <location filename="../qml/pages/MainPage.qml" line="137"/>
         <source>2 hours</source>
         <translation>2 ore</translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="139"/>
+        <location filename="../qml/pages/MainPage.qml" line="141"/>
         <source>4 hours</source>
         <translation>3 ore</translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="143"/>
+        <location filename="../qml/pages/MainPage.qml" line="145"/>
         <source>12 hours</source>
         <translation>12 ore</translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="153"/>
+        <location filename="../qml/pages/MainPage.qml" line="149"/>
+        <source>24 hours</source>
+        <translation type="unfinished">12 ore {24 ?}</translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/MainPage.qml" line="159"/>
         <source>Update interval</source>
         <translation>Aggiorna intervallo</translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="173"/>
+        <location filename="../qml/pages/MainPage.qml" line="179"/>
         <source>10 seconds</source>
         <translation>10 secondi</translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="177"/>
+        <location filename="../qml/pages/MainPage.qml" line="183"/>
         <source>30 seconds</source>
         <translation>30 secondi</translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="181"/>
+        <location filename="../qml/pages/MainPage.qml" line="187"/>
         <source>1 minute</source>
         <translation>1 minuto</translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="185"/>
+        <location filename="../qml/pages/MainPage.qml" line="191"/>
         <source>2 minutes</source>
         <translation>2 minuti</translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="189"/>
+        <location filename="../qml/pages/MainPage.qml" line="195"/>
         <source>5 minutes</source>
         <translation>5 minuti</translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="199"/>
+        <location filename="../qml/pages/MainPage.qml" line="205"/>
         <source>Server:</source>
         <translation>Istanza:</translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="199"/>
+        <location filename="../qml/pages/MainPage.qml" line="205"/>
         <source>Not configured</source>
         <translation>Non configurato</translation>
     </message>
@@ -172,57 +177,62 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/SettingsPage.qml" line="82"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="84"/>
         <source>30 minutes</source>
         <translation type="unfinished">30 minuti</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SettingsPage.qml" line="86"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="88"/>
         <source>1 hour</source>
         <translation type="unfinished">1 ora</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SettingsPage.qml" line="90"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="92"/>
         <source>2 hours</source>
         <translation type="unfinished">2 ore</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SettingsPage.qml" line="94"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="96"/>
         <source>4 hours</source>
         <translation type="unfinished">3 ore</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SettingsPage.qml" line="98"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="100"/>
         <source>12 hours</source>
         <translation type="unfinished">12 ore</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SettingsPage.qml" line="106"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="104"/>
+        <source>24 hours</source>
+        <translation type="unfinished">12 ore {24 ?}</translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/SettingsPage.qml" line="112"/>
         <source>Default update interval</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/SettingsPage.qml" line="125"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="131"/>
         <source>10 seconds</source>
         <translation type="unfinished">10 secondi</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SettingsPage.qml" line="129"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="135"/>
         <source>30 seconds</source>
         <translation type="unfinished">30 secondi</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SettingsPage.qml" line="133"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="139"/>
         <source>1 minute</source>
         <translation type="unfinished">1 minuto</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SettingsPage.qml" line="137"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="143"/>
         <source>2 minutes</source>
         <translation type="unfinished">2 minuti</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SettingsPage.qml" line="141"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="147"/>
         <source>5 minutes</source>
         <translation type="unfinished">5 minuti</translation>
     </message>

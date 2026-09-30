@@ -118,6 +118,8 @@ Page {
                         return 3;
                     case 43200:
                         return 4;
+                    case 86400:
+                        return 5;
                     default:
                         return 1;
                     }
@@ -142,6 +144,10 @@ Page {
                     MenuItem {
                         text: qsTr("12 hours")
                         onClicked: client.duration = 43200
+                    }
+                    MenuItem {
+                        text: qsTr("24 hours")
+                        onClicked: client.duration = 86400
                     }
                 }
             }
