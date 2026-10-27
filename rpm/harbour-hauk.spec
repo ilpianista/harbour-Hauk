@@ -28,15 +28,15 @@ BuildRequires:  desktop-file-utils
 %description
 A SailfishOS client for the Hauk realtime location sharing.
 
-%if "%{?vendor}" == "chum"
-PackageName: Hauk
+%if 0%{?_chum}
+Title: Hauk
 Type: desktop-application
 DeveloperName: Andrea Scarpino
 Categories:
  - Utility
 Custom:
   Repo: https://github.com/ilpianista/harbour-Hauk
-Icon: https://raw.githubusercontent.com/ilpianista/harbour-Hauk/master/icons/harbour-hauk.svg
+PackageIcon: https://raw.githubusercontent.com/ilpianista/harbour-Hauk/master/icons/harbour-hauk.svg
 Screenshots:
  - https://raw.githubusercontent.com/ilpianista/harbour-Hauk/master/screenshots/screenshot_1.png
  - https://raw.githubusercontent.com/ilpianista/harbour-Hauk/master/screenshots/screenshot_2.png
