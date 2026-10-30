@@ -22,6 +22,7 @@ HEADERS += \
 OTHER_FILES += \
     qml/cover/CoverPage.qml \
     qml/Hauk.qml \
+    qml/pages/AdoptShareDialog.qml \
     qml/pages/MainPage.qml \
     qml/pages/SettingsPage.qml \
     qml/pages/TrackingPage.qml \

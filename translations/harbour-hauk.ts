@@ -2,6 +2,44 @@
 <!DOCTYPE TS>
 <TS version="2.1">
 <context>
+    <name>AdoptShareDialog</name>
+    <message>
+        <location filename="../qml/pages/AdoptShareDialog.qml" line="46"/>
+        <source>Adopt a share</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AdoptShareDialog.qml" line="47"/>
+        <source>Adopt</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AdoptShareDialog.qml" line="53"/>
+        <source>Enter the ID or link of a share that allows adoption. The share will be added to your group.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AdoptShareDialog.qml" line="63"/>
+        <source>Share ID or link</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AdoptShareDialog.qml" line="64"/>
+        <source>e.g. KYL6-WWNJ</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AdoptShareDialog.qml" line="74"/>
+        <source>Nickname</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AdoptShareDialog.qml" line="75"/>
+        <source>Name on the group map</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CoverPage</name>
     <message>
         <location filename="../qml/cover/CoverPage.qml" line="28"/>
@@ -274,50 +312,60 @@
 <context>
     <name>TrackingPage</name>
     <message>
-        <location filename="../qml/pages/TrackingPage.qml" line="28"/>
+        <location filename="../qml/pages/TrackingPage.qml" line="36"/>
         <source>Stop sharing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/TrackingPage.qml" line="34"/>
+        <location filename="../qml/pages/TrackingPage.qml" line="39"/>
+        <source>Stopping sharing...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/TrackingPage.qml" line="47"/>
         <location filename="../qml/pages/TrackingPage.qml" line="172"/>
         <source>Share link</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/TrackingPage.qml" line="40"/>
+        <location filename="../qml/pages/TrackingPage.qml" line="53"/>
         <location filename="../qml/pages/TrackingPage.qml" line="184"/>
         <source>Share group PIN</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/TrackingPage.qml" line="85"/>
-        <source>YOUR GROUP PIN</source>
+        <location filename="../qml/pages/TrackingPage.qml" line="59"/>
+        <source>Adopt a share</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/TrackingPage.qml" line="103"/>
-        <source>Share this PIN with others to let them join your group share.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/TrackingPage.qml" line="118"/>
+        <location filename="../qml/pages/TrackingPage.qml" line="104"/>
         <source>Share type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/TrackingPage.qml" line="119"/>
+        <location filename="../qml/pages/TrackingPage.qml" line="105"/>
         <source>Group share (host)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/TrackingPage.qml" line="119"/>
+        <location filename="../qml/pages/TrackingPage.qml" line="105"/>
         <source>Group share (member)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/TrackingPage.qml" line="119"/>
+        <location filename="../qml/pages/TrackingPage.qml" line="105"/>
         <source>Your location only</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/TrackingPage.qml" line="110"/>
+        <source>Adopted into group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/TrackingPage.qml" line="117"/>
+        <source>Group PIN</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -337,7 +385,7 @@
     </message>
     <message>
         <location filename="../qml/pages/TrackingPage.qml" line="142"/>
-        <source>Short ID</source>
+        <source>Share ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

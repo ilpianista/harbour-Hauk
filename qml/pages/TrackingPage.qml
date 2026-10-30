@@ -13,10 +13,18 @@ Page {
     property bool creating: client.status === "Creating session..."
 
     function goBack() {
-        if (pageStack.depth > 1)
+        // Remove any pages pushed on top of the tracking page, such as the
+        // adopt dialog. Use an immediate pop so the navigation below can
+        // proceed without waiting for a transition.
+        if (pageStack.currentPage !== page) {
+            pageStack.pop(page, PageStackAction.Immediate)
+        }
+
+        if (pageStack.depth > 1) {
             pageStack.pop()
-        else
+        } else {
             pageStack.replace(Qt.resolvedUrl("MainPage.qml"))
+        }
     }
 
     SilicaFlickable {
@@ -27,19 +35,31 @@ Page {
             MenuItem {
                 text: qsTr("Stop sharing")
                 visible: client.tracking
-                onClicked: client.stopTracking()
-            }
-
-            MenuItem {
-                text: qsTr("Share link")
-                visible: client.shareLink != ""
-                onClicked: share.trigger()
+                onClicked: {
+                    Remorse.popupAction(page, qsTr("Stopping sharing..."),
+                                        function () {
+                                            client.stopTracking()
+                                        })
+                }
             }
 
             MenuItem {
                 text: qsTr("Share group PIN")
                 visible: client.groupPin != ""
                 onClicked: sharePin.trigger()
+            }
+
+            MenuItem {
+                text: qsTr("Adopt a share")
+                visible: client.groupHost && client.groupPin != ""
+                onClicked: pageStack.push(Qt.resolvedUrl(
+                                              "AdoptShareDialog.qml"))
+            }
+
+            MenuItem {
+                text: qsTr("Share link")
+                visible: client.shareLink != ""
+                onClicked: share.trigger()
             }
         }
 
@@ -76,40 +96,6 @@ Page {
 
             Column {
                 width: parent.width
-                visible: client.groupPin != ""
-                spacing: Theme.paddingSmall
-
-                Label {
-                    x: Theme.horizontalPageMargin
-                    width: parent.width - 2 * Theme.horizontalPageMargin
-                    text: qsTr("YOUR GROUP PIN")
-                    color: Theme.secondaryColor
-                    font.pixelSize: Theme.fontSizeSmall
-                    horizontalAlignment: Text.AlignHCenter
-                }
-
-                Label {
-                    x: Theme.horizontalPageMargin
-                    width: parent.width - 2 * Theme.horizontalPageMargin
-                    text: client.groupPin
-                    color: Theme.highlightColor
-                    font.pixelSize: Theme.fontSizeHuge
-                    horizontalAlignment: Text.AlignHCenter
-                }
-
-                Label {
-                    x: Theme.horizontalPageMargin
-                    width: parent.width - 2 * Theme.horizontalPageMargin
-                    text: qsTr("Share this PIN with others to let them join your group share.")
-                    color: Theme.secondaryColor
-                    font.pixelSize: Theme.fontSizeSmall
-                    horizontalAlignment: Text.AlignHCenter
-                    wrapMode: Text.Wrap
-                }
-            }
-
-            Column {
-                width: parent.width
                 visible: client.tracking
                 spacing: Theme.paddingMedium
 
@@ -117,6 +103,20 @@ Page {
                     width: parent.width - 2 * Theme.horizontalPageMargin
                     label: qsTr("Share type")
                     value: client.groupHost ? qsTr("Group share (host)") : client.groupMember ? qsTr("Group share (member)") : qsTr("Your location only")
+                }
+
+                DetailItem {
+                    width: parent.width - 2 * Theme.horizontalPageMargin
+                    label: qsTr("Adopted into group")
+                    value: client.adoptedGroupShareId
+                    visible: client.adoptedGroupShareId.length > 0
+                }
+
+                DetailItem {
+                    width: parent.width - 2 * Theme.horizontalPageMargin
+                    label: qsTr("Group PIN")
+                    value: client.groupPin
+                    visible: client.groupPin !== ""
                 }
 
                 DetailItem {
@@ -139,7 +139,7 @@ Page {
 
                 DetailItem {
                     width: parent.width - 2 * Theme.horizontalPageMargin
-                    label: qsTr("Short ID")
+                    label: qsTr("Share ID")
                     value: client.shareId.length > 0 ? client.shareId : client.shareLink.substring(
                                                            client.shareLink.indexOf(
                                                                "?") + 1)
@@ -215,8 +215,10 @@ Page {
         onError: errorMsg.text = message
         onTrackingChanged: {
             // Stopping from the menu, the cover, or session expiry returns to
-            // the start dialog.
-            if (!client.tracking && page.status === PageStatus.Active) {
+            // the start dialog. Inactive means the tracking page is covered by
+            // a dialog, for example the adopt dialog.
+            if (!client.tracking && (page.status === PageStatus.Active
+                                     || page.status === PageStatus.Inactive)) {
                 page.goBack()
             }
         }

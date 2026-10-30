@@ -32,6 +32,7 @@ class HaukClient : public QObject
     Q_PROPERTY(int activeShareMode READ activeShareMode NOTIFY activeShareModeChanged)
     Q_PROPERTY(bool groupHost READ isGroupHost NOTIFY activeShareModeChanged)
     Q_PROPERTY(bool groupMember READ isGroupMember NOTIFY activeShareModeChanged)
+    Q_PROPERTY(QString adoptedGroupShareId READ adoptedGroupShareId NOTIFY adoptedGroupShareChanged)
 
 public:
     enum ShareMode {
@@ -78,11 +79,13 @@ public:
     int activeShareMode() const { return m_activeShareMode; }
     bool isGroupHost() const { return m_activeShareMode == ShareGroupHost; }
     bool isGroupMember() const { return m_activeShareMode == ShareGroupMember; }
+    QString adoptedGroupShareId() const { return m_adoptedGroupShareId; }
 
     Q_INVOKABLE void startTracking();
     Q_INVOKABLE void stopTracking();
     Q_INVOKABLE void createGroupShare(const QString &nickname);
     Q_INVOKABLE void joinGroupShare(const QString &nickname, const QString &pin);
+    Q_INVOKABLE void adoptShare(const QString &shareId, const QString &nickname);
 
 signals:
     void serverUrlChanged();
@@ -101,12 +104,15 @@ signals:
     void groupPinChanged();
     void shareIdChanged();
     void activeShareModeChanged();
+    void adoptedGroupShareChanged();
     void error(const QString &message);
+    void adoptionFinished(bool success, const QString &message);
 
 private slots:
     void onCreateSessionFinished();
     void onStopSessionFinished();
     void onPostLocationFinished();
+    void onAdoptFinished();
     void updateLocation();
     void onPositionUpdated(const QGeoPositionInfo &info);
 
@@ -122,6 +128,7 @@ private:
     void setGroupPin(const QString &pin);
     void setShareId(const QString &id);
     void setActiveShareMode(int mode);
+    void setAdoptedGroupShare(const QString &id);
 
     QString m_serverUrl;
     QString m_username;
@@ -143,11 +150,13 @@ private:
     QString m_joinPin;
     QString m_groupPin;
     QString m_shareId;
+    QString m_adoptedGroupShareId;
     int m_shareMode;
     int m_activeShareMode;
 
     QNetworkAccessManager *m_nam;
     QNetworkReply *m_currentReply;
+    QNetworkReply *m_adoptReply;
     QTimer *m_countdownTimer;
     QGeoPositionInfoSource *m_positionSource;
     int m_sessionExpiry;

@@ -28,6 +28,7 @@ HaukClient::HaukClient(QObject *parent)
     , m_activeShareMode(ShareAlone)
     , m_nam(new QNetworkAccessManager(this))
     , m_currentReply(nullptr)
+    , m_adoptReply(nullptr)
     , m_countdownTimer(new QTimer(this))
     , m_secureStorage(new SecureStorage(this))
 {
@@ -194,6 +195,14 @@ void HaukClient::setActiveShareMode(int mode)
     }
 }
 
+void HaukClient::setAdoptedGroupShare(const QString &id)
+{
+    if (m_adoptedGroupShareId != id) {
+        m_adoptedGroupShareId = id;
+        emit adoptedGroupShareChanged();
+    }
+}
+
 void HaukClient::startTracking()
 {
     startSession(ShareAlone, QString(), QString());
@@ -207,6 +216,78 @@ void HaukClient::createGroupShare(const QString &nickname)
 void HaukClient::joinGroupShare(const QString &nickname, const QString &pin)
 {
     startSession(ShareGroupMember, nickname, pin);
+}
+
+void HaukClient::adoptShare(const QString &shareId, const QString &nickname)
+{
+    if (!m_tracking || m_sessionId.isEmpty()) {
+        emit adoptionFinished(false, QStringLiteral("No active sharing session"));
+        return;
+    }
+
+    if (m_activeShareMode != ShareGroupHost || m_groupPin.isEmpty()) {
+        emit adoptionFinished(false, QStringLiteral("Only group share hosts can adopt shares"));
+        return;
+    }
+
+    const QString trimmedNickname = nickname.trimmed();
+    if (trimmedNickname.isEmpty()) {
+        emit adoptionFinished(false, QStringLiteral("A nickname is required"));
+        return;
+    }
+
+    QString id = shareId.trimmed();
+    static const QRegularExpression linkPattern(QStringLiteral("\\?([A-Za-z0-9-]+)"));
+    const QRegularExpressionMatch match = linkPattern.match(id);
+    if (match.hasMatch()) {
+        id = match.captured(1);
+    }
+
+    if (id.isEmpty()) {
+        emit adoptionFinished(false, QStringLiteral("A share ID is required"));
+        return;
+    }
+
+    QUrl url(m_serverUrl + "/api/adopt.php");
+    QNetworkRequest request(url);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+
+    QUrlQuery data;
+    data.addQueryItem(QLatin1String("sid"), m_sessionId);
+    data.addQueryItem(QLatin1String("nic"), QString(trimmedNickname).replace("+", "%2B"));
+    data.addQueryItem(QLatin1String("aid"), id);
+    data.addQueryItem(QLatin1String("pin"), m_groupPin);
+
+    if (!m_username.isEmpty()) {
+        data.addQueryItem(QLatin1String("usr"), QString(m_username).replace("+", "%2B"));
+    }
+
+    data.addQueryItem(QLatin1String("pwd"), QString(m_password).replace("+", "%2B"));
+
+    if (m_adoptReply) {
+        m_adoptReply->disconnect(this);
+        m_adoptReply->abort();
+        m_adoptReply->deleteLater();
+        m_adoptReply = nullptr;
+    }
+
+    qDebug() << "Adopt share request:" << url << "share ID:" << id;
+
+    QNetworkReply *reply = m_nam->post(request, data.toString(QUrl::FullyEncoded).toUtf8());
+    m_adoptReply = reply;
+
+    QTimer *timeout = new QTimer(reply);
+    timeout->setSingleShot(true);
+    connect(timeout, &QTimer::timeout, this, [this, reply]() {
+        if (reply == m_adoptReply) {
+            qDebug() << "Adopt share request timed out:" << reply->url();
+            reply->setProperty("timedOut", true);
+            reply->abort();
+        }
+    });
+    timeout->start(15000);
+
+    connect(reply, &QNetworkReply::finished, this, &HaukClient::onAdoptFinished);
 }
 
 void HaukClient::startSession(int mode, const QString &nickname, const QString &pin)
@@ -234,6 +315,7 @@ void HaukClient::startSession(int mode, const QString &nickname, const QString &
 
     m_shareMode = mode;
     m_joinPin = trimmedPin;
+    setAdoptedGroupShare(QString());
 
     if (!trimmedNickname.isEmpty()) {
         setNickname(trimmedNickname);
@@ -278,6 +360,7 @@ void HaukClient::stopTracking()
     setGroupPin("");
     setShareId("");
     setActiveShareMode(ShareAlone);
+    setAdoptedGroupShare(QString());
     setRemainingSeconds(0);
     m_joinPin.clear();
     m_shareMode = ShareAlone;
@@ -435,6 +518,47 @@ void HaukClient::onStopSessionFinished()
     qDebug() << "Stop session response:" << QString::fromUtf8(response);
 }
 
+void HaukClient::onAdoptFinished()
+{
+    QNetworkReply *reply = qobject_cast<QNetworkReply *>(sender());
+    if (!reply)
+        return;
+
+    if (reply != m_adoptReply) {
+        reply->deleteLater();
+        return;
+    }
+
+    const bool timedOut = reply->property("timedOut").toBool();
+    const QNetworkReply::NetworkError networkError = reply->error();
+    const QString networkErrorString = reply->errorString();
+    const QByteArray response = reply->readAll();
+
+    reply->deleteLater();
+    m_adoptReply = nullptr;
+
+    const QString responseStr = QString::fromUtf8(response).trimmed();
+    qDebug() << "Adopt share response:" << responseStr
+             << "error:" << networkError << networkErrorString;
+
+    if (timedOut) {
+        emit adoptionFinished(false, QStringLiteral("The server did not respond in time"));
+        return;
+    }
+
+    if (networkError != QNetworkReply::NoError) {
+        emit adoptionFinished(false, responseStr.isEmpty() ? networkErrorString : responseStr);
+        return;
+    }
+
+    if (responseStr.startsWith(QStringLiteral("OK"))) {
+        emit adoptionFinished(true, QString());
+        return;
+    }
+
+    emit adoptionFinished(false, responseStr.isEmpty() ? networkErrorString : responseStr);
+}
+
 void HaukClient::updateLocation()
 {
     // Position will come via onPositionUpdated signal
@@ -504,8 +628,27 @@ void HaukClient::onPostLocationFinished()
     QString responseStr = QString::fromUtf8(response).trimmed();
     qDebug() << "Post location response:" << responseStr;
 
-    // Check if session expired
-    if (responseStr.startsWith("Session expired") || responseStr.contains("expired")) {
+    // The server returns all shares this session contributes to. When a solo
+    // share is adopted, the group share appears in this list in addition to
+    // the user's own share.
+    if (responseStr.startsWith("OK")) {
+        const QStringList lines = responseStr.split('\n');
+        if (lines.size() >= 2) {
+            const QString targetList = lines.size() > 2 ? lines[2] : QString();
+            const QStringList targetIds = targetList.split(',');
+
+            QString adoptedId;
+            for (const QString &targetId : targetIds) {
+                const QString id = targetId.trimmed();
+                if (!id.isEmpty() && id != m_shareId) {
+                    adoptedId = id;
+                    break;
+                }
+            }
+
+            setAdoptedGroupShare(adoptedId);
+        }
+    } else if (responseStr.contains("expired")) {
         stopTracking();
         emit error("Session expired");
     }
