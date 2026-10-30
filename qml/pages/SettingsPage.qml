@@ -149,6 +149,17 @@ Page {
                     }
                 }
             }
+
+            SectionHeader {
+                text: qsTr("Sharing")
+            }
+
+            TextSwitch {
+                text: qsTr("Allow adoption")
+                description: qsTr("Allow others to add me into a group share")
+                checked: client.allowAdoption
+                onCheckedChanged: client.allowAdoption = checked
+            }
         }
 
         VerticalScrollDecorator {}

@@ -1,10 +1,67 @@
 import QtQuick 2.2
-import Sailfish.Share 1.0
 import Sailfish.Silica 1.0
 
-Page {
+Dialog {
     id: page
     allowedOrientations: Orientation.All
+
+    property int shareMode: 0
+    property bool joining: shareMode === 2
+    property bool group: shareMode !== 0
+
+    backNavigation: false
+    // The dialog needs a pending destination, otherwise the page stack reports
+    // that forward navigation is unavailable and disables the accept action.
+    acceptDestination: trackingPage
+    acceptDestinationAction: PageStackAction.Push
+
+    canAccept: !group || (nicknameField.text.trim().length > 0
+                          && (!joining || /^\d{6}$/.test(pinField.text)))
+
+    Component {
+        id: trackingPage
+
+        TrackingPage {}
+    }
+
+    onOpened: {
+        errorMsg.text = ""
+
+        if (group) {
+            nicknameField.text = client.nickname
+            pinField.text = ""
+            nicknameField.focus = true
+        }
+    }
+
+    onStatusChanged: {
+        if (status === PageStatus.Active && client.tracking && !acceptPending) {
+            pageStack.replace(Qt.resolvedUrl("TrackingPage.qml"))
+        }
+    }
+
+    onGroupChanged: {
+        if (pinField) {
+            pinField.text = ""
+        }
+
+        if (group && nicknameField) {
+            nicknameField.text = client.nickname
+            nicknameField.focus = true
+        }
+    }
+
+    onAccepted: {
+        errorMsg.text = ""
+
+        if (!group) {
+            client.startTracking()
+        } else if (joining) {
+            client.joinGroupShare(nicknameField.text, pinField.text)
+        } else {
+            client.createGroupShare(nicknameField.text)
+        }
+    }
 
     SilicaFlickable {
         anchors.fill: parent
@@ -15,113 +72,67 @@ Page {
                 text: qsTr("Settings")
                 onClicked: pageStack.push(Qt.resolvedUrl("SettingsPage.qml"))
             }
-
-            MenuItem {
-                text: qsTr("Share link")
-                enabled: client.shareLink != ""
-                onClicked: {
-                    share.trigger();
-                }
-            }
         }
 
         Column {
             id: column
             width: parent.width
             spacing: Theme.paddingLarge
-            anchors.left: parent.left
-            anchors.right: parent.right
 
-            PageHeader {
+            DialogHeader {
                 title: "Hauk"
+                cancelText: ""
+                acceptText: !page.group ? qsTr(
+                                              "Start") : page.joining ? qsTr("Join") : qsTr(
+                                                                            "Create")
             }
 
-            Label {
+            // Sharing mode
+            ComboBox {
                 x: Theme.horizontalPageMargin
                 width: parent.width - 2 * Theme.horizontalPageMargin
-                text: client.status
-                color: Theme.primaryColor
-                font.pixelSize: Theme.fontSizeLarge
-                horizontalAlignment: Text.AlignHCenter
-            }
-
-            Label {
-                x: Theme.horizontalPageMargin
-                width: parent.width - 2 * Theme.horizontalPageMargin
-                text: formatTime(client.remainingSeconds)
-                color: Theme.secondaryHighlightColor
-                font.pixelSize: Theme.fontSizeExtraLarge
-                horizontalAlignment: Text.AlignHCenter
-                visible: client.tracking
-            }
-
-            Column {
-                width: parent.width
-                visible: client.tracking
-                spacing: Theme.paddingMedium
-
-                DetailItem {
-                    width: parent.width - 2 * Theme.horizontalPageMargin
-                    label: qsTr("Latitude")
-                    value: client.latitude.toFixed(6)
-                }
-
-                DetailItem {
-                    width: parent.width - 2 * Theme.horizontalPageMargin
-                    label: qsTr("Longitude")
-                    value: client.longitude.toFixed(6)
-                }
-
-                DetailItem {
-                    width: parent.width - 2 * Theme.horizontalPageMargin
-                    label: qsTr("Accuracy")
-                    value: client.accuracy.toFixed(1) + " m"
-                }
-
-                DetailItem {
-                    width: parent.width - 2 * Theme.horizontalPageMargin
-                    label: qsTr("Short ID")
-                    value: client.shareLink.substring(client.shareLink.indexOf("?") + 1)
-                }
-            }
-
-            // Start/Stop button
-            Button {
-                x: Theme.horizontalPageMargin
-                width: parent.width - 2 * Theme.horizontalPageMargin
-                text: client.tracking ? qsTr("Stop sharing") : qsTr("Start sharing")
-                enabled: !client.tracking || client.sessionId.length > 0
-                onClicked: {
-                    if (client.tracking) {
-                        client.stopTracking();
-                    } else {
-                        client.startTracking();
+                label: qsTr("Sharing mode")
+                currentIndex: page.shareMode
+                menu: ContextMenu {
+                    MenuItem {
+                        text: qsTr("Share my own location only")
+                        onClicked: page.shareMode = 0
+                    }
+                    MenuItem {
+                        text: qsTr("Create a group share")
+                        onClicked: page.shareMode = 1
+                    }
+                    MenuItem {
+                        text: qsTr("Join a group share")
+                        onClicked: {
+                            pinField.text = ""
+                            page.shareMode = 2
+                        }
                     }
                 }
             }
 
-            // Duration selector (when not tracking)
+            // Duration selector
             ComboBox {
                 x: Theme.horizontalPageMargin
                 width: parent.width - 2 * Theme.horizontalPageMargin
                 label: qsTr("Duration")
-                visible: !client.tracking
                 currentIndex: {
                     switch (client.duration) {
                     case 1800:
-                        return 0;
+                        return 0
                     case 3600:
-                        return 1;
+                        return 1
                     case 7200:
-                        return 2;
+                        return 2
                     case 14400:
-                        return 3;
+                        return 3
                     case 43200:
-                        return 4;
+                        return 4
                     case 86400:
-                        return 5;
+                        return 5
                     default:
-                        return 1;
+                        return 1
                     }
                 }
                 menu: ContextMenu {
@@ -152,26 +163,25 @@ Page {
                 }
             }
 
-            // Interval selector (when not tracking)
+            // Interval selector
             ComboBox {
                 x: Theme.horizontalPageMargin
                 width: parent.width - 2 * Theme.horizontalPageMargin
                 label: qsTr("Update interval")
-                visible: !client.tracking
                 currentIndex: {
                     switch (client.interval) {
                     case 10:
-                        return 0;
+                        return 0
                     case 30:
-                        return 1;
+                        return 1
                     case 60:
-                        return 2;
+                        return 2
                     case 120:
-                        return 3;
+                        return 3
                     case 300:
-                        return 4;
+                        return 4
                     default:
-                        return 1;
+                        return 1
                     }
                 }
                 menu: ContextMenu {
@@ -198,15 +208,44 @@ Page {
                 }
             }
 
+            TextField {
+                id: nicknameField
+                width: parent.width
+                visible: page.group
+                label: qsTr("Nickname")
+                placeholderText: qsTr("Your name on the map")
+                EnterKey.iconSource: page.joining ? "image://theme/icon-m-enter-next" : "image://theme/icon-m-enter-accept"
+                EnterKey.onClicked: {
+                    if (page.joining) {
+                        pinField.focus = true
+                    } else {
+                        page.accept()
+                    }
+                }
+            }
+
+            TextField {
+                id: pinField
+                width: parent.width
+                visible: page.joining
+                label: qsTr("Group PIN")
+                placeholderText: qsTr("6-digit group PIN")
+                inputMethodHints: Qt.ImhDigitsOnly
+                maximumLength: 6
+                EnterKey.iconSource: "image://theme/icon-m-enter-accept"
+                EnterKey.onClicked: page.accept()
+            }
+
             // Server info
             Label {
                 x: Theme.horizontalPageMargin
                 width: parent.width - 2 * Theme.horizontalPageMargin
-                text: qsTr("Server:") + " " + (client.serverUrl ? client.serverUrl : qsTr("Not configured"))
+                text: qsTr(
+                          "Server:") + " " + (client.serverUrl ? client.serverUrl : qsTr(
+                                                                     "Not configured"))
                 color: Theme.secondaryColor
                 font.pixelSize: Theme.fontSizeSmall
                 horizontalAlignment: Text.AlignHCenter
-                visible: !client.tracking
             }
 
             Item {
@@ -229,36 +268,17 @@ Page {
         VerticalScrollDecorator {}
     }
 
-    ShareAction {
-        id: share
-
-        title: qsTr("Share link")
-        mimeType: "text/x-url"
-        resources: [
-            {
-                "type": "text/x-url",
-                "linkTitle": "Hauk",
-                "status": client.shareLink
-            }
-        ]
-    }
-
-    function formatTime(seconds) {
-        if (seconds <= 0)
-            return "";
-        var hours = Math.floor(seconds / 3600);
-        var mins = Math.floor((seconds % 3600) / 60);
-        var secs = seconds % 60;
-        if (hours > 0) {
-            return hours + ":" + (mins < 10 ? "0" : "") + mins + ":" + (secs < 10 ? "0" : "") + secs;
-        }
-        return mins + ":" + (secs < 10 ? "0" : "") + secs;
-    }
-
     Connections {
         target: client
-        onError: {
-            errorMsg.text = errorMsg;
+        onError: errorMsg.text = message
+        onTrackingChanged: {
+            // If sharing was started outside this dialog (for example from the
+            // cover), move to the tracking page. When the dialog itself starts
+            // sharing, the acceptDestination push is already in progress.
+            if (client.tracking && page.status === PageStatus.Active
+                    && !page.acceptPending) {
+                pageStack.replace(Qt.resolvedUrl("TrackingPage.qml"))
+            }
         }
     }
 }

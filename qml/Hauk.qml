@@ -8,9 +8,19 @@ ApplicationWindow {
 
     property HaukClient client: HaukClient {}
 
-    initialPage: Component {
+    Component {
+        id: startPage
+
         MainPage {}
     }
+
+    Component {
+        id: trackingPage
+
+        TrackingPage {}
+    }
+
+    initialPage: client.tracking ? trackingPage : startPage
     cover: Qt.resolvedUrl("cover/CoverPage.qml")
     allowedOrientations: defaultAllowedOrientations
 }

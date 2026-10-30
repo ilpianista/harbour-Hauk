@@ -12,115 +12,139 @@
 <context>
     <name>MainPage</name>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="15"/>
+        <location filename="../qml/pages/MainPage.qml" line="72"/>
         <source>Settings</source>
         <translation>Instellingen</translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="65"/>
-        <source>Latitude</source>
-        <translation>Breedtegraad</translation>
+        <location filename="../qml/pages/MainPage.qml" line="94"/>
+        <source>Sharing mode</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="71"/>
-        <source>Longitude</source>
-        <translation>Lengtegraad</translation>
+        <location filename="../qml/pages/MainPage.qml" line="98"/>
+        <source>Share my own location only</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="77"/>
-        <source>Accuracy</source>
-        <translation>Precisie</translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/MainPage.qml" line="20"/>
-        <location filename="../qml/pages/MainPage.qml" line="232"/>
-        <source>Share link</source>
-        <translation>Koppeling delen</translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/MainPage.qml" line="83"/>
-        <source>Short ID</source>
-        <translation>Korte ID</translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/MainPage.qml" line="92"/>
-        <source>Stop sharing</source>
-        <translation>Delen stoppen</translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/MainPage.qml" line="92"/>
-        <source>Start sharing</source>
-        <translation>Delen starten</translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/MainPage.qml" line="108"/>
+        <location filename="../qml/pages/MainPage.qml" line="119"/>
         <source>Duration</source>
         <translation>Duur</translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="128"/>
+        <location filename="../qml/pages/MainPage.qml" line="140"/>
         <source>30 minutes</source>
         <translation>30 minuten</translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="132"/>
+        <location filename="../qml/pages/MainPage.qml" line="144"/>
         <source>1 hour</source>
         <translation>1 uur</translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="136"/>
+        <location filename="../qml/pages/MainPage.qml" line="148"/>
         <source>2 hours</source>
         <translation>2 uur</translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="140"/>
+        <location filename="../qml/pages/MainPage.qml" line="152"/>
         <source>4 hours</source>
         <translation>4 uur</translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="144"/>
+        <location filename="../qml/pages/MainPage.qml" line="156"/>
         <source>12 hours</source>
         <translation>12 uur</translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="154"/>
+        <location filename="../qml/pages/MainPage.qml" line="160"/>
+        <source>24 hours</source>
+        <translation type="unfinished">12 uur {24 ?}</translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/MainPage.qml" line="170"/>
         <source>Update interval</source>
         <translation>Updatefrequentie</translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="174"/>
+        <location filename="../qml/pages/MainPage.qml" line="189"/>
         <source>10 seconds</source>
         <translation>10 seconden</translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="178"/>
+        <location filename="../qml/pages/MainPage.qml" line="193"/>
         <source>30 seconds</source>
         <translation>30 seconden</translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="182"/>
+        <location filename="../qml/pages/MainPage.qml" line="197"/>
         <source>1 minute</source>
         <translation>1 minuut</translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="186"/>
+        <location filename="../qml/pages/MainPage.qml" line="201"/>
         <source>2 minutes</source>
         <translation>2 minuten</translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="190"/>
+        <location filename="../qml/pages/MainPage.qml" line="205"/>
         <source>5 minutes</source>
         <translation>5 minuten</translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="200"/>
+        <location filename="../qml/pages/MainPage.qml" line="243"/>
         <source>Server:</source>
         <translation>Server:</translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="201"/>
+        <location filename="../qml/pages/MainPage.qml" line="244"/>
         <source>Not configured</source>
         <translation>Niet geconfigureerd</translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/MainPage.qml" line="85"/>
+        <source>Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/MainPage.qml" line="86"/>
+        <source>Join</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/MainPage.qml" line="86"/>
+        <source>Create</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/MainPage.qml" line="102"/>
+        <source>Create a group share</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/MainPage.qml" line="106"/>
+        <source>Join a group share</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/MainPage.qml" line="215"/>
+        <source>Nickname</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/MainPage.qml" line="216"/>
+        <source>Your name on the map</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/MainPage.qml" line="231"/>
+        <source>Group PIN</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/MainPage.qml" line="232"/>
+        <source>6-digit group PIN</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -134,11 +158,6 @@
         <location filename="../qml/pages/SettingsPage.qml" line="21"/>
         <source>Server</source>
         <translation>Server</translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/SettingsPage.qml" line="27"/>
-        <source>https://your-server.com/hauk</source>
-        <translation>https://je-server.com/hauk</translation>
     </message>
     <message>
         <location filename="../qml/pages/SettingsPage.qml" line="29"/>
@@ -177,59 +196,154 @@
         <translation>Standaardduur</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SettingsPage.qml" line="82"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="84"/>
         <source>30 minutes</source>
         <translation>30 minuten</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SettingsPage.qml" line="86"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="88"/>
         <source>1 hour</source>
         <translation>1 uur</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SettingsPage.qml" line="90"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="92"/>
         <source>2 hours</source>
         <translation>2 uur</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SettingsPage.qml" line="94"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="96"/>
         <source>4 hours</source>
         <translation>4 uur</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SettingsPage.qml" line="98"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="100"/>
         <source>12 hours</source>
         <translation>12 uur</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SettingsPage.qml" line="106"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="104"/>
+        <source>24 hours</source>
+        <translation type="unfinished">12 uur {24 ?}</translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/SettingsPage.qml" line="112"/>
         <source>Default update interval</source>
         <translation>Standaardupdatefrequentie</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SettingsPage.qml" line="125"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="131"/>
         <source>10 seconds</source>
         <translation>10 seconden</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SettingsPage.qml" line="129"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="135"/>
         <source>30 seconds</source>
         <translation>30 seconden</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SettingsPage.qml" line="133"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="139"/>
         <source>1 minute</source>
         <translation>1 minuut</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SettingsPage.qml" line="137"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="143"/>
         <source>2 minutes</source>
         <translation>2 minuten</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SettingsPage.qml" line="141"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="147"/>
         <source>5 minutes</source>
         <translation>5 minuten</translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/SettingsPage.qml" line="154"/>
+        <source>Sharing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/SettingsPage.qml" line="158"/>
+        <source>Allow adoption</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/SettingsPage.qml" line="159"/>
+        <source>Allow others to add me into a group share</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TrackingPage</name>
+    <message>
+        <location filename="../qml/pages/TrackingPage.qml" line="28"/>
+        <source>Stop sharing</source>
+        <translation type="unfinished">Delen stoppen</translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/TrackingPage.qml" line="34"/>
+        <location filename="../qml/pages/TrackingPage.qml" line="172"/>
+        <source>Share link</source>
+        <translation type="unfinished">Koppeling delen</translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/TrackingPage.qml" line="40"/>
+        <location filename="../qml/pages/TrackingPage.qml" line="184"/>
+        <source>Share group PIN</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/TrackingPage.qml" line="85"/>
+        <source>YOUR GROUP PIN</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/TrackingPage.qml" line="103"/>
+        <source>Share this PIN with others to let them join your group share.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/TrackingPage.qml" line="118"/>
+        <source>Share type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/TrackingPage.qml" line="119"/>
+        <source>Group share (host)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/TrackingPage.qml" line="119"/>
+        <source>Group share (member)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/TrackingPage.qml" line="119"/>
+        <source>Your location only</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/TrackingPage.qml" line="124"/>
+        <source>Latitude</source>
+        <translation type="unfinished">Breedtegraad</translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/TrackingPage.qml" line="130"/>
+        <source>Longitude</source>
+        <translation type="unfinished">Lengtegraad</translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/TrackingPage.qml" line="136"/>
+        <source>Accuracy</source>
+        <translation type="unfinished">Precisie</translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/TrackingPage.qml" line="142"/>
+        <source>Short ID</source>
+        <translation type="unfinished">Korte ID</translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/TrackingPage.qml" line="188"/>
+        <source>Join my Hauk group share with PIN %1</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

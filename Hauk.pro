@@ -24,6 +24,7 @@ OTHER_FILES += \
     qml/Hauk.qml \
     qml/pages/MainPage.qml \
     qml/pages/SettingsPage.qml \
+    qml/pages/TrackingPage.qml \
     harbour-hauk.desktop \
     rpm/harbour-hauk.changes \
     rpm/harbour-hauk.spec \

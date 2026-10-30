@@ -25,8 +25,22 @@ class HaukClient : public QObject
     Q_PROPERTY(double latitude READ latitude NOTIFY positionChanged)
     Q_PROPERTY(double longitude READ longitude NOTIFY positionChanged)
     Q_PROPERTY(double accuracy READ accuracy NOTIFY positionChanged)
+    Q_PROPERTY(QString nickname READ nickname WRITE setNickname NOTIFY nicknameChanged)
+    Q_PROPERTY(bool allowAdoption READ allowAdoption WRITE setAllowAdoption NOTIFY allowAdoptionChanged)
+    Q_PROPERTY(QString groupPin READ groupPin NOTIFY groupPinChanged)
+    Q_PROPERTY(QString shareId READ shareId NOTIFY shareIdChanged)
+    Q_PROPERTY(int activeShareMode READ activeShareMode NOTIFY activeShareModeChanged)
+    Q_PROPERTY(bool groupHost READ isGroupHost NOTIFY activeShareModeChanged)
+    Q_PROPERTY(bool groupMember READ isGroupMember NOTIFY activeShareModeChanged)
 
 public:
+    enum ShareMode {
+        ShareAlone = 0,
+        ShareGroupHost = 1,
+        ShareGroupMember = 2
+    };
+    Q_ENUM(ShareMode)
+
     explicit HaukClient(QObject *parent = nullptr);
 
     QString serverUrl() const { return m_serverUrl; }
@@ -53,8 +67,22 @@ public:
     double longitude() const { return m_longitude; }
     double accuracy() const { return m_accuracy; }
 
+    QString nickname() const { return m_nickname; }
+    void setNickname(const QString &nickname);
+
+    bool allowAdoption() const { return m_allowAdoption; }
+    void setAllowAdoption(bool allowAdoption);
+
+    QString groupPin() const { return m_groupPin; }
+    QString shareId() const { return m_shareId; }
+    int activeShareMode() const { return m_activeShareMode; }
+    bool isGroupHost() const { return m_activeShareMode == ShareGroupHost; }
+    bool isGroupMember() const { return m_activeShareMode == ShareGroupMember; }
+
     Q_INVOKABLE void startTracking();
     Q_INVOKABLE void stopTracking();
+    Q_INVOKABLE void createGroupShare(const QString &nickname);
+    Q_INVOKABLE void joinGroupShare(const QString &nickname, const QString &pin);
 
 signals:
     void serverUrlChanged();
@@ -68,6 +96,11 @@ signals:
     void statusChanged();
     void remainingSecondsChanged();
     void positionChanged();
+    void nicknameChanged();
+    void allowAdoptionChanged();
+    void groupPinChanged();
+    void shareIdChanged();
+    void activeShareModeChanged();
     void error(const QString &message);
 
 private slots:
@@ -78,6 +111,7 @@ private slots:
     void onPositionUpdated(const QGeoPositionInfo &info);
 
 private:
+    void startSession(int mode, const QString &nickname, const QString &pin);
     void createSession();
     void postLocation(double lat, double lon, double accuracy, double speed);
     void setStatus(const QString &s);
@@ -85,6 +119,9 @@ private:
     void setSessionId(const QString &sid);
     void setShareLink(const QString &link);
     void setRemainingSeconds(int s);
+    void setGroupPin(const QString &pin);
+    void setShareId(const QString &id);
+    void setActiveShareMode(int mode);
 
     QString m_serverUrl;
     QString m_username;
@@ -100,6 +137,14 @@ private:
     double m_latitude;
     double m_longitude;
     double m_accuracy;
+
+    QString m_nickname;
+    bool m_allowAdoption;
+    QString m_joinPin;
+    QString m_groupPin;
+    QString m_shareId;
+    int m_shareMode;
+    int m_activeShareMode;
 
     QNetworkAccessManager *m_nam;
     QNetworkReply *m_currentReply;

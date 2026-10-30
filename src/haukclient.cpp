@@ -8,6 +8,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QNetworkRequest>
+#include <QRegularExpression>
 #include <QStandardPaths>
 #include <QUrlQuery>
 
@@ -22,6 +23,9 @@ HaukClient::HaukClient(QObject *parent)
     , m_latitude(0)
     , m_longitude(0)
     , m_accuracy(0)
+    , m_allowAdoption(false)
+    , m_shareMode(ShareAlone)
+    , m_activeShareMode(ShareAlone)
     , m_nam(new QNetworkAccessManager(this))
     , m_currentReply(nullptr)
     , m_countdownTimer(new QTimer(this))
@@ -36,6 +40,8 @@ HaukClient::HaukClient(QObject *parent)
     m_username = m_settings->value("username", "").toString();
     m_duration = m_settings->value("duration", 3600).toInt();
     m_interval = m_settings->value("interval", 30).toInt();
+    m_nickname = m_settings->value("nickname", "").toString();
+    m_allowAdoption = m_settings->value("allowAdoption", false).toBool();
 
     connect(m_secureStorage, &SecureStorage::initialized, this, [this]() {
         m_password = m_secureStorage->loadPassword();
@@ -106,6 +112,24 @@ void HaukClient::setInterval(int i)
     }
 }
 
+void HaukClient::setNickname(const QString &nickname)
+{
+    if (m_nickname != nickname) {
+        m_nickname = nickname;
+        m_settings->setValue("nickname", nickname);
+        emit nicknameChanged();
+    }
+}
+
+void HaukClient::setAllowAdoption(bool allowAdoption)
+{
+    if (m_allowAdoption != allowAdoption) {
+        m_allowAdoption = allowAdoption;
+        m_settings->setValue("allowAdoption", allowAdoption);
+        emit allowAdoptionChanged();
+    }
+}
+
 void HaukClient::setStatus(const QString &s)
 {
     if (m_status != s) {
@@ -146,11 +170,73 @@ void HaukClient::setRemainingSeconds(int s)
     }
 }
 
+void HaukClient::setGroupPin(const QString &pin)
+{
+    if (m_groupPin != pin) {
+        m_groupPin = pin;
+        emit groupPinChanged();
+    }
+}
+
+void HaukClient::setShareId(const QString &id)
+{
+    if (m_shareId != id) {
+        m_shareId = id;
+        emit shareIdChanged();
+    }
+}
+
+void HaukClient::setActiveShareMode(int mode)
+{
+    if (m_activeShareMode != mode) {
+        m_activeShareMode = mode;
+        emit activeShareModeChanged();
+    }
+}
+
 void HaukClient::startTracking()
+{
+    startSession(ShareAlone, QString(), QString());
+}
+
+void HaukClient::createGroupShare(const QString &nickname)
+{
+    startSession(ShareGroupHost, nickname, QString());
+}
+
+void HaukClient::joinGroupShare(const QString &nickname, const QString &pin)
+{
+    startSession(ShareGroupMember, nickname, pin);
+}
+
+void HaukClient::startSession(int mode, const QString &nickname, const QString &pin)
 {
     if (m_serverUrl.isEmpty()) {
         emit error("Server URL not configured");
         return;
+    }
+
+    const QString trimmedNickname = nickname.trimmed();
+    const QString trimmedPin = pin.trimmed();
+
+    if (mode != ShareAlone && trimmedNickname.isEmpty()) {
+        emit error("A nickname is required for group shares");
+        return;
+    }
+
+    if (mode == ShareGroupMember) {
+        static const QRegularExpression pinPattern(QStringLiteral("^\\d{6}$"));
+        if (!pinPattern.match(trimmedPin).hasMatch()) {
+            emit error("The group PIN must be exactly 6 digits");
+            return;
+        }
+    }
+
+    m_shareMode = mode;
+    m_joinPin = trimmedPin;
+
+    if (!trimmedNickname.isEmpty()) {
+        setNickname(trimmedNickname);
     }
 
     setStatus("Creating session...");
@@ -189,7 +275,12 @@ void HaukClient::stopTracking()
     setTracking(false);
     setSessionId("");
     setShareLink("");
+    setGroupPin("");
+    setShareId("");
+    setActiveShareMode(ShareAlone);
     setRemainingSeconds(0);
+    m_joinPin.clear();
+    m_shareMode = ShareAlone;
     setStatus("Stopped");
 }
 
@@ -205,58 +296,131 @@ void HaukClient::createSession()
     data.addQueryItem(QLatin1String("int"), QString::number(m_interval));
     data.addQueryItem(QLatin1String("dur"), QString::number(m_duration));
     data.addQueryItem(QLatin1String("sid"), m_sessionId);
+    data.addQueryItem(QLatin1String("mod"), QString::number(m_shareMode));
+
+    if (m_shareMode == ShareAlone) {
+        data.addQueryItem(QLatin1String("ado"), m_allowAdoption ? QLatin1String("1") : QLatin1String("0"));
+    } else {
+        data.addQueryItem(QLatin1String("nic"), QString(m_nickname).replace("+", "%2B"));
+
+        if (m_shareMode == ShareGroupMember) {
+            data.addQueryItem(QLatin1String("pin"), m_joinPin);
+        }
+    }
 
     if (!m_username.isEmpty()) {
         data.addQueryItem(QLatin1String("usr"), QString(m_username).replace("+", "%2B"));
     }
 
-    if (!m_password.isEmpty()) {
-        data.addQueryItem(QLatin1String("pwd"), QString(m_password).replace("+", "%2B"));
+    // Always send pwd parameter as the server requires it for authentication
+    // (even if empty, the server will verify against its configured hash)
+    data.addQueryItem(QLatin1String("pwd"), QString(m_password).replace("+", "%2B"));
+
+    if (m_currentReply) {
+        m_currentReply->disconnect(this);
+        m_currentReply->abort();
+        m_currentReply->deleteLater();
+        m_currentReply = nullptr;
     }
 
-    m_currentReply = m_nam->post(request, data.toString(QUrl::FullyEncoded).toUtf8());
-    connect(m_currentReply, &QNetworkReply::finished, this, &HaukClient::onCreateSessionFinished);
+    qDebug() << "Create session request:" << url;
+
+    QNetworkReply *reply = m_nam->post(request, data.toString(QUrl::FullyEncoded).toUtf8());
+    m_currentReply = reply;
+
+    QTimer *timeout = new QTimer(reply);
+    timeout->setSingleShot(true);
+    connect(timeout, &QTimer::timeout, this, [this, reply]() {
+        if (reply == m_currentReply) {
+            qDebug() << "Create session request timed out:" << reply->url();
+            reply->setProperty("timedOut", true);
+            reply->abort();
+        }
+    });
+    timeout->start(15000);
+
+    connect(reply, &QNetworkReply::finished, this, &HaukClient::onCreateSessionFinished);
 }
 
 void HaukClient::onCreateSessionFinished()
 {
-    if (!m_currentReply)
+    QNetworkReply *reply = qobject_cast<QNetworkReply *>(sender());
+    if (!reply)
         return;
 
-    QByteArray response = m_currentReply->readAll();
-    m_currentReply->deleteLater();
+    if (reply != m_currentReply) {
+        reply->deleteLater();
+        return;
+    }
+
+    const bool timedOut = reply->property("timedOut").toBool();
+    const QNetworkReply::NetworkError networkError = reply->error();
+    const QString networkErrorString = reply->errorString();
+    const QByteArray response = reply->readAll();
+
+    reply->deleteLater();
     m_currentReply = nullptr;
 
-    QString responseStr = QString::fromUtf8(response);
-    //qDebug() << "Create session response:" << responseStr;
+    QString responseStr = QString::fromUtf8(response).trimmed();
+    qDebug() << "Create session response:" << responseStr
+             << "error:" << networkError << networkErrorString;
 
-    // Parse response: OK\n<share_link>\n<session_id>
+    if (timedOut) {
+        setStatus("Session creation timed out");
+        emit error("The server did not respond in time");
+        return;
+    }
+
+    if (networkError != QNetworkReply::NoError) {
+        setStatus("Failed to create session");
+        emit error(responseStr.isEmpty() ? networkErrorString : responseStr);
+        return;
+    }
+
+    // Parse response: OK\n<session_id>\n<share_link>[\n<group_pin>]\n<share_id>
     QStringList lines = responseStr.split('\n');
     if (lines.isEmpty() || !lines[0].startsWith("OK")) {
         setStatus("Failed to create session");
-        emit error(responseStr);
+        emit error(responseStr.isEmpty() ? networkErrorString : responseStr);
         return;
     }
 
-    if (lines.size() >= 3) {
-        QString sessionId = lines[1];
-        QString shareLink = lines[2];
-
-        setSessionId(sessionId);
-        setShareLink(shareLink);
-        setTracking(true);
-        setRemainingSeconds(m_duration);
-        setStatus("Sharing location");
-
-        m_sessionExpiry = QDateTime::currentMSecsSinceEpoch() / 1000 + m_duration;
-
-        m_countdownTimer->start(1000);
-        m_positionSource->setUpdateInterval(m_interval * 1000);
-        m_positionSource->startUpdates();
-    } else {
+    if (lines.size() < 3) {
         setStatus("Invalid server response");
         emit error("Invalid response format");
+        return;
     }
+
+    const QString sessionId = lines[1].trimmed();
+    const QString shareLink = lines[2].trimmed();
+
+    if (m_shareMode == ShareGroupHost) {
+        if (lines.size() < 5) {
+            setStatus("Invalid server response");
+            emit error("Invalid response format");
+            return;
+        }
+
+        setGroupPin(lines[3].trimmed());
+        setShareId(lines[4].trimmed());
+    } else {
+        setGroupPin(QString());
+        setShareId(lines.size() > 3 ? lines[3].trimmed()
+                                    : shareLink.mid(shareLink.indexOf('?') + 1));
+    }
+
+    setSessionId(sessionId);
+    setShareLink(shareLink);
+    setActiveShareMode(m_shareMode);
+    setTracking(true);
+    setRemainingSeconds(m_duration);
+    setStatus("Sharing location");
+
+    m_sessionExpiry = QDateTime::currentMSecsSinceEpoch() / 1000 + m_duration;
+
+    m_countdownTimer->start(1000);
+    m_positionSource->setUpdateInterval(m_interval * 1000);
+    m_positionSource->startUpdates();
 }
 
 void HaukClient::onStopSessionFinished()
