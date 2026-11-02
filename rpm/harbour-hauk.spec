@@ -41,6 +41,7 @@ Screenshots:
  - https://raw.githubusercontent.com/ilpianista/harbour-Hauk/master/screenshots/screenshot_1.png
  - https://raw.githubusercontent.com/ilpianista/harbour-Hauk/master/screenshots/screenshot_2.png
  - https://raw.githubusercontent.com/ilpianista/harbour-Hauk/master/screenshots/screenshot_3.png
+ - https://raw.githubusercontent.com/ilpianista/harbour-Hauk/master/screenshots/screenshot_4.png
 Links:
   Homepage: https://github.com/ilpianista/harbour-Hauk
   Bugtracker: https://github.com/ilpianista/harbour-Hauk/issues
